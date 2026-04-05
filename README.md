@@ -1,6 +1,6 @@
 # 🎬 Movie Reservation System
 
-A FastAPI-based REST API for browsing movies, scheduling shows, and booking seats.
+This is a FastAPI-based REST API for browsing movies, scheduling shows, and booking seats.
 
 ---
 
@@ -72,11 +72,6 @@ pip install -r requirements.txt
 
 Edit `.env` (already provided with sensible defaults):
 
-```env
-DATABASE_URL=sqlite:///./movie.db
-SECRET_KEY=supersecretkey_change_in_production
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-```
 
 ### 3. Run migrations (or let the app auto-create tables)
 
@@ -101,7 +96,7 @@ This creates:
 uvicorn app.main:app --reload
 ```
 
-Visit **http://localhost:8000/docs** for the interactive Swagger UI.
+Visit **http://localhost:8080/docs** for the interactive Swagger UI.
 
 ---
 
@@ -144,17 +139,4 @@ Visit **http://localhost:8000/docs** for the interactive Swagger UI.
 | GET | `/reservations/my` | ✅ User | List my reservations |
 | DELETE | `/reservations/{id}` | ✅ User | Cancel a reservation |
 
----
-
-## Bugs Fixed from Original Code
-
-1. **Dead code after `return`** in `core/security.py` — unreachable lines removed
-2. **`status` not imported** in `routers/auth.py` — caused `NameError` on login
-3. **Duplicate router registration** in `main.py` — both `app.auth.router` and `app.routers.auth` were mounted at `/auth`
-4. **`settings` object undefined** in `utils/auth.py` — config used plain variables, not a settings object
-5. **Two separate `Base` instances** — `models/user.py` imported from `app.database`, others from `app.db.base`; unified to single Base
-6. **Duplicate `Token` schema** in `schemas/user.py` — second definition silently overwrote first
-7. **Hard-coded DB URL** in `db/session.py` — ignored `.env` entirely
-8. **`is_available` was always `True`** in shows router — seat model had no boolean field; fixed with real `is_reserved` column
-9. **`schemas/show.py` was empty** — no schemas defined despite being used
-10. **Migration `d2e806872cea` was a stub** — `upgrade()` just had `pass`; replaced with full schema migration
+--
